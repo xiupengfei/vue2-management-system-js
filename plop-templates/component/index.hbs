@@ -1,0 +1,30 @@
+{{#if template}}
+<template>
+  <div id="{{ properCase name }}">
+    {{ properCase name }} Component
+  </div>
+</template>
+{{/if}}
+
+{{#if script}}
+<script>
+export default {
+  name: '{{ properCase name }}',
+  components: {},
+  props: {},
+  data() {
+    return {}
+  },
+  created() {},
+  beforeMount() {},
+  mounted() {},
+  methods: {}
+}
+</script>
+{{/if}}
+
+{{#if style}}
+<style lang="scss" scoped>
+
+</style>
+{{/if}}
