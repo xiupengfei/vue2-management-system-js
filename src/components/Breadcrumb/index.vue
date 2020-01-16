@@ -10,8 +10,6 @@
 </template>
 
 <script>
-import pathToRegexp from 'path-to-regexp'
-
 export default {
   data() {
     return {
@@ -30,25 +28,7 @@ export default {
     getBreadcrumb() {
       // 显示路由的 meta.title
       const matched = this.$route.matched.filter(item => item.meta && item.meta.title)
-      const first = matched[0]
-
-      if (!this.isDashboard(first)) {
-        // matched = [{ path: '/dashboard', meta: { title: '首页' }}].concat(matched)
-      }
-
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
-    },
-    isDashboard(route) {
-      const name = route && route.name
-      if (!name) {
-        return false
-      }
-      return name.trim().toLocaleLowerCase() === 'Dashboard'.toLocaleLowerCase()
-    },
-    pathCompile(path) {
-      const { params } = this.$route
-      var toPath = pathToRegexp.compile(path)
-      return toPath(params)
     },
     handleLink(item) {
       const { redirect, path } = item
@@ -57,7 +37,6 @@ export default {
         return
       }
       this.$router.push(path)
-      // this.$router.push(this.pathCompile(path))
     }
   }
 }

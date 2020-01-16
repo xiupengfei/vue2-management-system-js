@@ -9,19 +9,30 @@ export default {
     }
   },
   methods: {
-    show(data = {}) {
-      this.form = deepClone(data)
+    show(data) {
+      if (data !== undefined) {
+        this.form = deepClone(data)
+      }
+
       this.dialogVisible = true
       this.loading = false
     },
     hide() {
+      Object.entries(this.form).map(([k, v]) => {
+        if (Array.isArray(v)) {
+          v.splice(0)
+        }
+      })
+      if (this.$refs.ruleForm) {
+        this.$refs.ruleForm.resetFields()
+      }
       this.dialogVisible = false
     },
     submit() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           this.loading = true
-          this.$emit('cb', this.form)
+          this.$emit('cb', deepClone(this.form))
         } else {
           return false
         }

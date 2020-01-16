@@ -1,16 +1,16 @@
-import { login, logout } from '@/api'
-import { getToken, setToken, setUserInfo, getUserInfo, setRoles, getRoles } from '@/utils/auth'
+// import { login, logout } from '@/api'
+import { login, getUserInfo } from '@/api'
+import { getToken, setToken } from '@/utils/auth'
 import { ClearAllStorate } from '@/utils'
 // import router, { resetRouter } from '@/router'
 import { resetRouter } from '@/router'
-import { SET_TOKEN, SET_AVATAR, SET_ROLES, SET_USERINFO, SET_ACTIONS } from '@/store/types/user'
+import { SET_TOKEN, SET_AVATAR, SET_ROLES, SET_USERINFO } from '@/store/types/user'
 
 const state = {
   token: getToken(),
-  avatar: '',
+  avatar: '', // 头像
   userinfo: {}, // 用户信息
-  roles: [], // 角色列表
-  actions: [] // 操作权限
+  roles: [] // 角色列表
 }
 
 const mutations = {
@@ -25,18 +25,7 @@ const mutations = {
   },
   [SET_USERINFO]: (state, userinfo) => {
     state.userinfo = userinfo
-  },
-  [SET_ACTIONS]: (state, actions) => {
-    state.actions = actions
   }
-}
-
-const getActionsFromRoles = roles => {
-  const res = []
-  roles.map(role => {
-    res.push(...role.actions)
-  })
-  return [...new Set(res)]
 }
 
 const actions = {
@@ -44,15 +33,10 @@ const actions = {
   login({ commit, dispatch }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: window.btoa(password) }).then(response => {
-        const roles = response.roles.map(role => role.name)
-        commit(SET_TOKEN, response.token)
-        // commit('SET_USERINFO', response)
-        // commit('SET_ROLES', roles)
+      login({ username: username.trim(), password: password }).then(res => {
+        commit(SET_TOKEN, res.token)
         // dispatch('permission/generateRoutes', roles)
-        setToken(response.token)
-        setUserInfo(response)
-        setRoles(roles)
+        setToken(res.token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -61,22 +45,15 @@ const actions = {
   },
 
   // 获取并初始化信息
-  getInitData({ commit, state }) {
-    const roles = getRoles()
-    const userinfo = getUserInfo()
-    const token = getToken()
-    const actions = getActionsFromRoles(userinfo.roles)
+  getUserInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      commit(SET_TOKEN, token)
-      commit(SET_ROLES, roles)
-      commit(SET_USERINFO, userinfo)
-      commit(SET_AVATAR, (userinfo.avatar))
-      commit(SET_ACTIONS, actions)
-      resolve({
-        roles,
-        userinfo,
-        token,
-        actions
+      getUserInfo(getToken()).then(res => {
+        commit(SET_USERINFO, res)
+        commit(SET_ROLES, res.roles)
+        commit(SET_AVATAR, res.avatar)
+        resolve(res)
+      }).catch(error => {
+        reject(error)
       })
     })
   },
@@ -84,7 +61,15 @@ const actions = {
   // 登出
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      // ***********测试使用****************
+      commit(SET_TOKEN, '')
+      commit(SET_ROLES, [])
+      commit(SET_USERINFO, {})
+      ClearAllStorate()
+      resetRouter()
+      resolve()
+      // ***************************
+      /* logout(state.token).then(() => {
         commit(SET_TOKEN, '')
         commit(SET_ROLES, [])
         commit(SET_USERINFO, {})
@@ -93,7 +78,7 @@ const actions = {
         resolve()
       }).catch(error => {
         reject(error)
-      })
+      }) */
     })
   },
 

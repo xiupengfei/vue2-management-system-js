@@ -18,10 +18,10 @@ npm start
 
 ```bash
 # 建立测试环境
-npm run build:stage
+npm run build:test
 
 # 构建生产环境
-npm run build:prod
+npm run build:prod 或 npm run build
 ```
 
 ## 开发

@@ -1,23 +1,18 @@
 <template>
-  <div class="navbar">
+  <div class="navbar boxshadow">
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
-    <div class="right-menu">
-      <!-- <template v-if="device!=='mobile'">
-        <el-tooltip :content="isFullscreen ? '退出全屏' : '全屏显示'" effect="dark" placement="bottom">
-          <screenfull id="screenfull" class="right-menu-item hover-effect" @fullscreenState="fullscreenState" />
-        </el-tooltip>
-      </template> -->
-      <span class="right-menu-item">HI, {{ userinfo.username }}</span>
+    <breadcrumb id="breadcrumb-container" class="fl" />
+    <div class="right-menu fr">
+      <div v-if="showSystemTime" class="right-menu-item">
+        <system-time />
+      </div>
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+        <div class="avatar-wrapper pointer">
+          <img :src="avatar" class="user-avatar inline-block">
+          <span class="username inline-block">{{ userinfo.name }}</span>
+          <i class="el-icon-caret-bottom inline-block" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/">
-            <el-dropdown-item>个人信息</el-dropdown-item>
-          </router-link>
           <el-dropdown-item @click.native.prevent="$emit('scp')">修改密码</el-dropdown-item>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">退出登录</span>
@@ -29,28 +24,38 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-// import Screenfull from '@/components/Screenfull'
+import SystemTime from '@/components/SystemTime'
+import { showSystemTime } from '@/settings'
 
 export default {
   components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
+    SystemTime
   },
   data() {
     return {
-      isFullscreen: false
+      showSystemTime
     }
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar',
-      'device',
-      'userinfo'
-    ])
+    sidebar() {
+      return this.$store.getters.sidebar
+    },
+    avatar() {
+      return this.$store.getters.avatar
+    },
+    device() {
+      return this.$store.getters.device
+    },
+    userinfo() {
+      return this.$store.getters.userinfo
+    }
+  },
+  beforeMount() {
+
   },
   methods: {
     toggleSideBar() {
@@ -60,22 +65,22 @@ export default {
       await this.$store.dispatch('user/logout')
       this.$router.push('/login')
       // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-    },
-    fullscreenState: function(isFullscreen = false) {
-      this.isFullscreen = isFullscreen
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import '~@/styles/variables.scss';
+
 .navbar {
-  height: 50px;
+  height: $navBarHeight;
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
-
+  &.boxshadow {
+    box-shadow: 0 4px 3px 0 rgba(0,0,0,.2);
+  }
   .hamburger-container {
     line-height: 46px;
     height: 100%;
@@ -89,14 +94,9 @@ export default {
     }
   }
 
-  .breadcrumb-container {
-    float: left;
-  }
-
   .right-menu {
-    float: right;
     height: 100%;
-    line-height: 50px;
+    line-height: $navBarHeight;
 
     &:focus {
       outline: none;
@@ -121,24 +121,22 @@ export default {
     }
 
     .avatar-container {
-      margin-right: 30px;
+      margin-right: 10px;
 
       .avatar-wrapper {
-        margin-top: 5px;
-        position: relative;
-
+        height: 100%;
         .user-avatar {
-          cursor: pointer;
           width: 40px;
           height: 40px;
-          border-radius: 10px;
+          border-radius: 50%;
+          vertical-align: middle;
         }
-
+        .username {
+          vertical-align: middle;
+          height: 100%;
+        }
         .el-icon-caret-bottom {
-          cursor: pointer;
-          position: absolute;
-          right: -20px;
-          top: 25px;
+          vertical-align: middle;
           font-size: 12px;
         }
       }

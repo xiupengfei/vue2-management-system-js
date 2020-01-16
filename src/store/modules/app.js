@@ -1,5 +1,5 @@
 import { GetStorate, SetStorate } from '@/utils'
-import { TOGGLE_SIDEBAR, CLOSE_SIDEBAR, TOGGLE_DEVICE, SET_SIZE, SET_TABLE_HTIGHT } from '@/store/types/app'
+import { TOGGLE_SIDEBAR, CLOSE_SIDEBAR, TOGGLE_DEVICE, SET_SIZE } from '@/store/types/app'
 
 const state = {
   sidebar: {
@@ -7,8 +7,7 @@ const state = {
     withoutAnimation: false
   },
   device: 'desktop', // 'mobile' | 'desktop'
-  size: GetStorate('size') || 'medium',
-  tableHeight: innerHeight - 180
+  size: GetStorate('size') || 'medium'
 }
 const mutations = {
   [TOGGLE_SIDEBAR]: state => {
@@ -31,9 +30,6 @@ const mutations = {
   [SET_SIZE]: (state, size) => {
     state.size = size
     SetStorate('size', size)
-  },
-  [SET_TABLE_HTIGHT]: (state, tableHeight) => {
-    state.tableHeight = tableHeight
   }
 }
 
@@ -49,9 +45,6 @@ const actions = {
   },
   setSize({ commit }, size) {
     commit(SET_SIZE, size)
-  },
-  setTableHeight({ commit }, tableHeight) {
-    commit(SET_TABLE_HTIGHT, tableHeight)
   }
 }
 

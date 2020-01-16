@@ -10,6 +10,8 @@ const getters = {
   userinfo: state => state.user.userinfo,
   actions: state => state.user.actions,
   roles: state => state.user.roles,
-  permission_routes: state => state.permission.routes
+  permission_routes: state => state.permission.routes,
+  sidebarLogo: state => state.settings.sidebarLogo,
+  showTagsView: state => state.settings.showTagsView
 }
 export default getters

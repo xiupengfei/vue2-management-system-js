@@ -2,10 +2,10 @@
   <div class="wscn-http404-container">
     <div class="wscn-http404">
       <div class="pic-404">
-        <img class="pic-404__parent" src="@/assets/404_images/404.png" alt="404">
-        <img class="pic-404__child left" src="@/assets/404_images/404_cloud.png" alt="404">
-        <img class="pic-404__child mid" src="@/assets/404_images/404_cloud.png" alt="404">
-        <img class="pic-404__child right" src="@/assets/404_images/404_cloud.png" alt="404">
+        <img class="pic-404__parent" src="@/assets/img/404/404.png" alt="404">
+        <img class="pic-404__child left" src="@/assets/img/404/404_cloud.png" alt="404">
+        <img class="pic-404__child mid" src="@/assets/img/404/404_cloud.png" alt="404">
+        <img class="pic-404__child right" src="@/assets/img/404/404_cloud.png" alt="404">
       </div>
       <div class="bullshit">
         <h1>页面搬家了</h1>
@@ -18,12 +18,7 @@
 <script>
 
 export default {
-  name: 'Page404',
-  computed: {
-    message() {
-      return 'The webmaster said that you can not enter this page...'
-    }
-  }
+  name: 'Page404'
 }
 </script>
 

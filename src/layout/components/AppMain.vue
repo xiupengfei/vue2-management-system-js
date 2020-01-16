@@ -25,34 +25,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@/styles/variables.scss';
+
 .app-main {
-  /* 50= navbar  50  */
-  min-height: calc(100vh - 50px);
+  min-height: calc(100% - #{$navBarHeight});
+  height: calc(100% - #{$navBarHeight});
   width: 100%;
   position: relative;
-  overflow: hidden;
-  &>.el-scrollbar{
-      height: calc(100vh - 50px);
-  }
-}
-
-.fixed-header+.app-main {
-  padding-top: 50px;
-  height: 100vh;
-  overflow: auto;
+  overflow-x: hidden;
+  padding: 10px 10px 0;
 }
 
 .hasTagsView {
   .app-main {
-    /* 84 = navbar + tags-view = 50 + 34 */
-    min-height: calc(100vh - 84px);
-    &>.el-scrollbar{
-      height: calc(100vh - 84px);
-    }
-  }
-
-  .fixed-header+.app-main {
-    padding-top: 84px;
+    /* app-main = navbar + tags-view = 50 + 34 */
+    min-height: calc(100% - #{$navBarHeight} - 34px);
+    height: calc(100% - #{$navBarHeight} - 34px);
   }
 }
 </style>

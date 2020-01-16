@@ -67,4 +67,4 @@ export const isArray = arg => typeOf(arg) === 'array'
  * @param {String} str
  * @returns {Boolean}
  */
-export const isPhoneNumber = str => /^1[34578]\d{9}$/.test(str)
+export const isPhoneNumber = str => /^1[12345789]\d{9}$/.test(str)

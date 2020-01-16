@@ -5,7 +5,7 @@
 </template>
 
 <script>
-const tagAndTagSpacing = 4 // tagAndTagSpacing
+const tagAndTagSpacing = 4
 
 export default {
   name: 'ScrollPane',
@@ -34,7 +34,7 @@ export default {
       let firstTag = null
       let lastTag = null
 
-      // find first tag and last tag
+      // 获取第一个和最后一个tag
       if (tagList.length > 0) {
         firstTag = tagList[0]
         lastTag = tagList[tagList.length - 1]
@@ -45,15 +45,15 @@ export default {
       } else if (lastTag === currentTag) {
         $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
       } else {
-        // find preTag and nextTag
+        // 获取前一个tag和后一个tag
         const currentIndex = tagList.findIndex(item => item === currentTag)
         const prevTag = tagList[currentIndex - 1]
         const nextTag = tagList[currentIndex + 1]
 
-        // the tag's offsetLeft after of nextTag
+        // tag之后的偏移
         const afterNextTagOffsetLeft = nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagAndTagSpacing
 
-        // the tag's offsetLeft before of prevTag
+        // tag之前的偏移
         const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - tagAndTagSpacing
 
         if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $containerWidth) {
@@ -73,6 +73,7 @@ export default {
   position: relative;
   overflow: hidden;
   width: 100%;
+  // 或 >>>
   /deep/ {
     .el-scrollbar__bar {
       bottom: 0px;

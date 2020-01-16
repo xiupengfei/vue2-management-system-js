@@ -1,6 +1,6 @@
 <template>
   <div id="ChangePassword">
-    <el-dialog title="密码修改" :visible.sync="dialogVisible">
+    <el-dialog title="密码修改" :visible.sync="dialogVisible" :close-on-click-modal="false">
       <el-form ref="ruleForm" label-position="right" :model="form" :rules="rules">
         <el-form-item label="原密码" prop="checkOldPass" :label-width="formLabelWidth">
           <el-input v-model="form.oldPassword" type="password" autocomplete="off" />
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { changePassword } from '@/api/index'
 
 export default {
   name: 'ChangePassword',
@@ -31,14 +32,21 @@ export default {
       dialogVisible: false,
       formLabelWidth: '120px',
       form: {
+        user_id: null,
         oldPassword: '',
         newPassword: '',
         newPassword2: ''
       },
       rules: {
-        checkOldPass: [{ validator: this.checkOldPass, trigger: ['blur', 'change'] }],
-        checkNewPass: [{ validator: this.checkNewPass, trigger: ['blur', 'change'] }],
-        checkPass: [{ validator: this.checkPass, trigger: ['blur', 'change'] }]
+        checkOldPass: [
+          { required: true, validator: this.checkOldPass, trigger: ['blur', 'change'] }
+        ],
+        checkNewPass: [
+          { required: true, validator: this.checkNewPass, trigger: ['blur', 'change'] }
+        ],
+        checkPass: [
+          { required: true, validator: this.checkPass, trigger: ['blur', 'change'] }
+        ]
       },
       loading: false
     }
@@ -47,6 +55,9 @@ export default {
   beforeMount() {},
   mounted() {},
   methods: {
+    hide() {
+      this.dialogVisible = false
+    },
     checkOldPass(rule, value, callback) {
       if (this.form.oldPassword.length < 6) {
         callback(new Error('密码长度要大于6位'))
@@ -72,12 +83,27 @@ export default {
       }
     },
     submit() {
-      this.loading = true
-      setTimeout(() => {
-        this.loading = false
-        this.dialogVisible = false
-        this.$message.success('密码修改成功')
-      }, 3000)
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          this.form.user_id = this.$store.getters.userinfo.user_id
+          this.loading = true
+          changePassword({
+            user_id: this.form.user_id,
+            old_password: btoa(this.form.oldPassword),
+            new_password: btoa(this.form.newPassword)
+          }).then(() => {
+            this.$message.success('密码修改成功')
+            this.loading = false
+            this.hide()
+          }, () => {
+            // this.$message.error('密码修改失败')
+            this.loading = false
+            this.hide()
+          })
+        } else {
+          return false
+        }
+      })
     }
   }
 }

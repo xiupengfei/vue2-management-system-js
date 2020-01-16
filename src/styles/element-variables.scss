@@ -1,13 +1,20 @@
 /**
 * 修改element-ui的默认主题
 **/
+@import './variables.scss';
 
 /* theme color */
-$--color-primary: #1890ff;
-$--color-success: #13ce66;
-$--color-warning: #FFBA00;
-$--color-danger: #ff4949;
+// $--color-primary: #1890ff;
+// $--color-success: #13ce66;
+// $--color-warning: #FFBA00;
+// $--color-danger: #ff4949;
 // $--color-info: #1E1E1E;
+
+$--color-primary: $color-primary;
+$--color-success: $color-success;
+$--color-warning: $color-warning;
+$--color-danger: $color-danger;
+$--color-info: $color-info;
 
 $--button-font-weight: 400;
 

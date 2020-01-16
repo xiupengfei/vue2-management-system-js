@@ -8,7 +8,7 @@
         :class="isActive(tag)?'active':''"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         tag="span"
-        class="tags-view-item"
+        class="tags-view-item not-select"
         @click.middle.native="closeSelectedTag(tag)"
         @contextmenu.prevent.native="openMenu(tag,$event)"
       >
@@ -16,9 +16,9 @@
         <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
     </scroll-pane>
-    <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
+    <ul v-show="visible" :style="{left: `${left}px`, top: `${top}px`}" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">刷新</li>
-      <li v-if="!(selectedTag.meta&&selectedTag.meta.affix)" @click="closeSelectedTag(selectedTag)">关闭</li>
+      <li v-if="!(selectedTag.meta && selectedTag.meta.affix)" @click="closeSelectedTag(selectedTag)">关闭</li>
       <li @click="closeOthersTags">关闭其他标签</li>
       <li @click="closeAllTags(selectedTag)">关闭所有标签</li>
     </ul>
@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import ScrollPane from './ScrollPane'
 import path from 'path'
+import ScrollPane from './ScrollPane'
 
 export default {
   components: { ScrollPane },
@@ -93,7 +93,7 @@ export default {
     initTags() {
       const affixTags = this.affixTags = this.filterAffixTags(this.routes)
       for (const tag of affixTags) {
-        // Must have tag name
+        // 必须有tag名称
         if (tag.name) {
           this.$store.dispatch('tagsView/addVisitedView', tag)
         }
@@ -157,10 +157,9 @@ export default {
       if (latestView) {
         this.$router.push(latestView)
       } else {
-        // now the default is to redirect to the home page if there is no tags-view,
-        // you can adjust it according to your needs.
+        // 如果没有tag视图，默认情况是重定向到主页
         if (view.name === 'Dashboard') {
-          // to reload home page
+          // 加载首页
           this.$router.replace({ path: '/redirect' + view.fullPath })
         } else {
           this.$router.push('/')
@@ -219,9 +218,9 @@ export default {
         margin-right: 15px;
       }
       &.active {
-        background-color: #42b983;
+        background-color: #304156;
         color: #fff;
-        border-color: #42b983;
+        border-color: #304156;
         &::before {
           content: '';
           background: #fff;

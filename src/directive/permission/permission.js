@@ -4,7 +4,6 @@ import { superAdminRoleNames } from '@/settings'
 export default {
   inserted(el, binding, vnode) {
     const { value } = binding
-
     const { roles, actions } = store.getters
 
     if (value && value instanceof Array && value.length > 0) {

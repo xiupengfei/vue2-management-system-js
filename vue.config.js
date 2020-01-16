@@ -8,10 +8,10 @@ function resolve(dir) {
 
 const name = defaultSettings.title || '' // 页面标题
 
-const port = 8080
+const port = process.env.VUE_APP_PORT || 8080
 
 module.exports = {
-  publicPath: '/',
+  publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
@@ -20,12 +20,12 @@ module.exports = {
     port: port,
     open: true,
     overlay: {
-      warnings: false,
+      warnings: true,
       errors: true
     },
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
-        target: `http://127.0.0.1:3000`,
+        target: process.env.VUE_APP_SERVER_URL,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
@@ -78,13 +78,26 @@ module.exports = {
         return options
       })
       .end()
+    config.module
+      .rule('worker')
+      .test(/\.worker\.js$/)
+      .use('worker-loader')
+      .loader('worker-loader')
+      .options({
+        inline: true
+        // publicPath: './'
+      })
+      .end()
 
     config
       // https://webpack.js.org/configuration/devtool/#development
       .when(process.env.NODE_ENV === 'development',
         config => config.devtool('cheap-source-map')
       )
-
+    config.plugin('simple-progress-webpack-plugin')
+      .use(require.resolve('simple-progress-webpack-plugin'), [{
+        format: 'compact'
+      }])
     config
       .when(process.env.NODE_ENV !== 'development',
         config => {
@@ -104,17 +117,22 @@ module.exports = {
                   name: 'chunk-libs',
                   test: /[\\/]node_modules[\\/]/,
                   priority: 10,
-                  chunks: 'initial' // 仅打包最初依赖的第三方工具包
+                  chunks: 'initial'
+                },
+                vue: {
+                  name: 'chunk-vue',
+                  test: /[\\/]node_modules[\\/]_?vue(.*)/,
+                  priority: 20
                 },
                 elementUI: {
-                  name: 'chunk-elementUI', // elementUI拆分为单个包
-                  priority: 20, // 限制需要大于
-                  test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // 适应cnpm
+                  name: 'chunk-element-ui',
+                  priority: 18,
+                  test: /[\\/]node_modules[\\/]_?element-ui(.*)/
                 },
                 commons: {
-                  name: 'chunk-commons',
-                  test: resolve('src/components'), // 自定义规则
-                  minChunks: 3, //  最小公共数
+                  name: 'chunk-common-components',
+                  test: resolve('src/components'),
+                  minChunks: 3,
                   priority: 5,
                   reuseExistingChunk: true
                 }

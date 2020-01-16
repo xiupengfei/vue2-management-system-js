@@ -1,16 +1,16 @@
 <template>
-  <div :class="classObj" class="app-wrapper">
+  <div :class="classObj" class="app-container">
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <sidebar class="sidebar-container" />
-    <div :class="{hasTagsView:needTagsView}" class="main-container">
-      <div :class="{'fixed-header':fixedHeader}">
+    <div :class="{hasTagsView: showTagsView}" class="main-container">
+      <!-- <div class="fixed-header">
         <navbar @scp="showChangePassword" />
-        <tags-view v-if="needTagsView" />
-      </div>
+        <tags-view v-if="showTagsView" />
+      </div> -->
+      <navbar @scp="showChangePassword" />
+      <tags-view v-if="showTagsView" />
       <app-main />
-      <right-panel v-if="showSettings">
-        <settings />
-      </right-panel>
+      <right-panel v-if="showSettings" />
     </div>
     <change-password ref="changePassword" />
   </div>
@@ -19,10 +19,9 @@
 <script>
 import RightPanel from '@/components/RightPanel'
 import ChangePassword from '@/components/ChangePassword'
-import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
+import { AppMain, Navbar, Sidebar, TagsView } from './components'
 import { ResizeHandler, Socket } from './mixin'
 
-import { mapState } from 'vuex'
 // import styles from '@/styles/variables.scss'
 export default {
   name: 'Layout',
@@ -30,20 +29,24 @@ export default {
     AppMain,
     Navbar,
     RightPanel,
-    Settings,
     Sidebar,
     TagsView,
     ChangePassword
   },
   mixins: [ResizeHandler, Socket],
   computed: {
-    ...mapState({
-      sidebar: state => state.app.sidebar,
-      device: state => state.app.device,
-      showSettings: state => state.settings.showSettings,
-      needTagsView: state => state.settings.tagsView,
-      fixedHeader: state => state.settings.fixedHeader
-    }),
+    sidebar() {
+      return this.$store.getters.sidebar
+    },
+    device() {
+      return this.$store.getters.device
+    },
+    showSettings() {
+      return this.$store.getters.showSettings
+    },
+    showTagsView() {
+      return this.$store.getters.showTagsView
+    },
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
@@ -68,12 +71,14 @@ export default {
   @import "~@/styles/mixin.scss";
   @import "~@/styles/variables.scss";
 
-  .app-wrapper {
+  .app-container {
     @include clearfix;
     position: relative;
     height: 100%;
     width: 100%;
-
+    .main-container {
+      height: 100%;
+    }
     &.mobile.openSidebar {
       position: fixed;
       top: 0;
@@ -81,29 +86,12 @@ export default {
   }
 
   .drawer-bg {
-    background: #000;
+    background: black;
     opacity: 0.3;
     width: 100%;
     top: 0;
     height: 100%;
     position: absolute;
     z-index: 999;
-  }
-
-  .fixed-header {
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 9;
-    width: calc(100% - #{$sideBarWidth});
-    transition: width 0.28s;
-  }
-
-  .hideSidebar .fixed-header {
-    width: calc(100% - 54px)
-  }
-
-  .mobile .fixed-header {
-    width: 100%;
   }
 </style>

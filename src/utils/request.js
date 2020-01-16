@@ -3,18 +3,20 @@ import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
+const UNKNOWN_ERROR = '未知错误!'
+
 // 创建 axios 实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  withCredentials: true, // 跨域请求时发送cookie
-  timeout: 10000 // 请求超时时间
+  // withCredentials: true, // 跨域请求时发送cookie
+  timeout: 30000 // 请求超时时间
 })
 
 // 请求拦截器
 service.interceptors.request.use(
   config => {
     if (store.getters.token) {
-      config.headers['X-Auth-Token'] = getToken()
+      config.headers['x-auth-token'] = getToken()
     }
     return config
   },
@@ -26,28 +28,18 @@ service.interceptors.request.use(
 
 // 响应拦截器
 service.interceptors.response.use(
-  response => {
-    const res = response.data
-    if (response.status !== 200) {
-      Message({
-        message: res.message || 'Error',
-        type: 'error',
-        duration: 5 * 1000
-      })
-
-      return Promise.reject(res.message || 'Error')
-    } else {
-      return res
-    }
-  },
+  response => response.data,
   error => {
     // timeout of 5000ms exceeded
     const re = /^timeout of (\d+)ms exceeded$/
     if (re.test(error.message)) {
-      error.message = `请求超时: ${RegExp.$1}毫秒, 请重试`
+      error.message = `请求超时: ${RegExp.$1}毫秒, 请重试！`
     }
     let showMessage = true
     switch (error.response && error.response.status) {
+      case 400:
+        error.message = error.response.data.msg || error.response.data.message || UNKNOWN_ERROR
+        break
       case 401:
         error.message = '登录失效, 请重新登录！'
         showMessage = false
@@ -68,10 +60,10 @@ service.interceptors.response.use(
         error.message = '资源不存在, 或已被删除！'
         break
       case 500:
-        error.message = '服务器繁忙, 稍后重试！'
+        error.message = '服务器异常！'
         break
       // default:
-      //   console.log(11)
+      //   error.message = UNKNOWN_ERROR
     }
     if (showMessage) {
       Message({

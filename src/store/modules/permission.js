@@ -1,16 +1,15 @@
 import { asyncRoutes, constantRoutes } from '@/router'
 import { SET_ROUTES } from '@/store/types/permission'
-import { getRouterNames } from '@/resources/actionsMappingRouter'
 import { superAdminRoleNames } from '@/settings'
 
 /**
  * 使用meta.role确定当前用户是否具有权限
  * @param roles
- * @param routerNames
+ * @param route
  */
-const hasPermission = (routerNames, route) => {
-  if (route.meta && route.meta.permission) {
-    return routerNames.some(name => route.name === name)
+const hasPermission = (roles, route) => {
+  if (route.meta && route.meta.roles) {
+    return roles.some(role => route.meta.roles.includes(role))
   } else {
     return true
   }
@@ -21,15 +20,14 @@ const hasPermission = (routerNames, route) => {
  * @param routes asyncRoutes
  * @param routerNames
  */
-const filterAsyncRoutes = (routes, routerNames) => {
+const filterAsyncRoutes = (routes, roles) => {
   const res = []
 
   routes.forEach(route => {
     const tmp = { ...route }
-
-    if (hasPermission(routerNames, tmp)) {
+    if (hasPermission(roles, tmp)) {
       if (tmp.children) {
-        tmp.children = filterAsyncRoutes(tmp.children, routerNames)
+        tmp.children = filterAsyncRoutes(tmp.children, roles)
       }
       res.push(tmp)
     }
@@ -51,15 +49,14 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit }, { roles, actions }) {
+  generateRoutes({ commit }, { roles }) {
     return new Promise(resolve => {
       let accessedRoutes
 
       if (roles.some(role => superAdminRoleNames.includes(role))) {
         accessedRoutes = asyncRoutes || []
       } else {
-        const routerNames = getRouterNames(actions)
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, routerNames)
+        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
       }
       commit(SET_ROUTES, accessedRoutes)
       resolve(accessedRoutes)
