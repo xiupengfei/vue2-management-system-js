@@ -11,7 +11,7 @@ const systemRouter = {
   meta: {
     title: '系统管理',
     icon: 'system',
-    roles: ['admin']
+    roles: ['system']
   },
   children: [
     {
@@ -20,8 +20,7 @@ const systemRouter = {
       name: 'system_index',
       meta: {
         title: '系统管理',
-        icon: 'system',
-        roles: ['admin']
+        icon: 'system'
       }
     }
   ]

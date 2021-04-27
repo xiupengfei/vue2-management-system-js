@@ -11,7 +11,7 @@ NProgress.configure({ showSpinner: false }) // NProgress 配置
 
 const whiteList = ['/login', '/auth-redirect'] // 没有重定向白名单
 
-router.beforeEach(async(to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   NProgress.start()
   document.title = getPageTitle(to.meta.title)
   // 确定用户是否已登录

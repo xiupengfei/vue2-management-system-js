@@ -1,21 +1,29 @@
 <template>
   <div class="navbar boxshadow">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger
+      id="hamburger-container"
+      :is-active="sidebar.opened"
+      class="hamburger-container"
+      @toggleClick="toggleSideBar"
+    />
     <breadcrumb id="breadcrumb-container" class="fl" />
     <div class="right-menu fr">
       <div v-if="showSystemTime" class="right-menu-item">
         <system-time />
       </div>
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+      <el-dropdown
+        class="avatar-container right-menu-item hover-effect"
+        trigger="click"
+      >
         <div class="avatar-wrapper pointer">
-          <img :src="avatar" class="user-avatar inline-block">
+          <!-- <img :src="avatar" class="user-avatar inline-block"> -->
           <span class="username inline-block">{{ userinfo.name }}</span>
           <i class="el-icon-caret-bottom inline-block" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item @click.native.prevent="$emit('scp')">修改密码</el-dropdown-item>
+          <!-- <el-dropdown-item @click.native.prevent="$emit('scp')">修改密码</el-dropdown-item> -->
           <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">退出登录</span>
+            <span style="display: block" @click="logout">退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -54,9 +62,7 @@ export default {
       return this.$store.getters.userinfo
     }
   },
-  beforeMount() {
-
-  },
+  beforeMount() {},
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
@@ -79,18 +85,18 @@ export default {
   position: relative;
   background: #fff;
   &.boxshadow {
-    box-shadow: 0 4px 3px 0 rgba(0,0,0,.2);
+    box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.2);
   }
   .hamburger-container {
     line-height: 46px;
     height: 100%;
     float: left;
     cursor: pointer;
-    transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    transition: background 0.3s;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(0, 0, 0, 0.025);
     }
   }
 
@@ -112,10 +118,10 @@ export default {
 
       &.hover-effect {
         cursor: pointer;
-        transition: background .3s;
+        transition: background 0.3s;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: rgba(0, 0, 0, 0.025);
         }
       }
     }

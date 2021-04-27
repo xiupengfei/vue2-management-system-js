@@ -27,7 +27,7 @@ module.exports = {
    * @type {boolean} true | false
    * @description 是否显示系统时间
    */
-  showSystemTime: true,
+  showSystemTime: false,
 
   /**
    * @type {object} []

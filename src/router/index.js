@@ -10,6 +10,7 @@ import Layout from '@/layout'
 import dashboardRouter from './modules/dashboard'
 // import userRouter from './modules/user'
 import systemRouter from './modules/system'
+import permissionRouter from './modules/permission'
 
 /**
  * 说明: 只有当路由子菜单长度大于等于1时才会出现 children.length >= 1
@@ -90,19 +91,14 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   systemRouter,
-  {
-    path: 'external-link',
-    component: Layout,
-    meta: { permission: false },
-    children: [
-      {
-        path: 'https://www.baidu.com/',
-        meta: { title: '百度', icon: 'link' }
-      }
-    ]
-  },
+  permissionRouter,
   // 404 必须在最后!!!
-  { path: '*', redirect: '/404', hidden: true, meta: {}}
+  {
+    path: '*',
+    redirect: '/404', // 或者重定向到首页
+    hidden: true,
+    meta: {}
+  }
 ]
 
 const createRouter = () => new Router({
@@ -114,7 +110,7 @@ const createRouter = () => new Router({
 const router = createRouter()
 
 // https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter() {
+export function resetRouter () {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // 重置 router
 }

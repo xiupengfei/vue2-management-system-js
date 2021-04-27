@@ -2,17 +2,17 @@ import store from '@/store'
 import { superAdminRoleNames } from '@/settings'
 
 export default {
-  inserted(el, binding, vnode) {
+  inserted (el, binding, vnode) {
     const { value } = binding
-    const { roles, actions } = store.getters
+    const { roles, permissions } = store.getters
 
-    if (value && value instanceof Array && value.length > 0) {
-      const permissionActions = value
+    if (Array.isArray(value) && value.length > 0) {
+      const permissionPermissions = value
 
       const isSuperAdmin = roles.some(role => superAdminRoleNames.includes(role))
       if (!isSuperAdmin) {
-        const hasPermission = actions.some(action => {
-          return permissionActions.includes(action)
+        const hasPermission = permissions.some(permission => {
+          return permissionPermissions.includes(permission)
         })
         if (!hasPermission) {
           if (binding.modifiers.enable) {

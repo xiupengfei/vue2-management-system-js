@@ -4,13 +4,14 @@ import { getToken, setToken } from '@/utils/auth'
 import { ClearAllStorate } from '@/utils'
 // import router, { resetRouter } from '@/router'
 import { resetRouter } from '@/router'
-import { SET_TOKEN, SET_AVATAR, SET_ROLES, SET_USERINFO } from '@/store/types/user'
+import { SET_TOKEN, SET_AVATAR, SET_ROLES, SET_PERMISSION, SET_USERINFO } from '@/store/types/user'
 
 const state = {
   token: getToken(),
   avatar: '', // 头像
   userinfo: {}, // 用户信息
-  roles: [] // 角色列表
+  roles: [], // 角色列表
+  permissions: [] // 权限列表
 }
 
 const mutations = {
@@ -23,6 +24,9 @@ const mutations = {
   [SET_ROLES]: (state, roles) => {
     state.roles = roles
   },
+  [SET_PERMISSION]: (state, permissions) => {
+    state.permissions = permissions
+  },
   [SET_USERINFO]: (state, userinfo) => {
     state.userinfo = userinfo
   }
@@ -30,7 +34,7 @@ const mutations = {
 
 const actions = {
   // 登录
-  login({ commit, dispatch }, userInfo) {
+  login ({ commit, dispatch }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(res => {
@@ -45,12 +49,24 @@ const actions = {
   },
 
   // 获取并初始化信息
-  getUserInfo({ commit, state }) {
+  getUserInfo ({ commit, state }) {
     return new Promise((resolve, reject) => {
       getUserInfo(getToken()).then(res => {
-        commit(SET_USERINFO, res)
+        let permissions = []
+        if (Array.isArray(res.permissions)) {
+          permissions = res.permissions
+        }
+
+        const _roles = []
+        permissions.forEach(permission => {
+          _roles.push(permission.split(':')[0])
+        })
+        res.roles = [...new Set(_roles)]
+        commit(SET_PERMISSION, permissions)
         commit(SET_ROLES, res.roles)
+
         commit(SET_AVATAR, res.avatar)
+        commit(SET_USERINFO, res)
         resolve(res)
       }).catch(error => {
         reject(error)
@@ -59,7 +75,7 @@ const actions = {
   },
 
   // 登出
-  logout({ commit, state }) {
+  logout ({ commit, state }) {
     return new Promise((resolve, reject) => {
       // ***********测试使用****************
       commit(SET_TOKEN, '')
@@ -83,7 +99,7 @@ const actions = {
   },
 
   // 移除 token
-  resetToken({ commit }) {
+  resetToken ({ commit }) {
     return new Promise(resolve => {
       commit(SET_TOKEN, '')
       commit(SET_ROLES, [])

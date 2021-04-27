@@ -74,6 +74,15 @@
     "vue-template-compiler": "^2.6.11",
     "worker-loader": "^2.0.0"
   },
+  "prettier": {
+    "eslintIntegration": true,
+    "stylelintIntegration": true,
+    "singleQuote": true,
+    "semi": false,
+    "insertPragma": false,
+    "trailingComma": "none",
+    "arrowParens": "avoid"
+  },
   "engines": {
     "node": ">=8.9",
     "npm": ">= 3.0.0"

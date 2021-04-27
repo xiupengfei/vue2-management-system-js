@@ -12,6 +12,7 @@ import router from '@/router'
 
 import '@/icons' // icon
 import '@/permission' // 权限控制
+import permission from '@/directive/permission'
 
 import * as filters from '@/filters' // 全局 filters
 
@@ -25,6 +26,9 @@ Object.keys(filters).forEach(key => {
 Vue.use(Element, {
   size: componentSize // 设置默认大小 large| medium | small
 })
+
+// Vue.directive('permission', permission)
+Vue.use(permission)
 
 Vue.config.productionTip = false
 

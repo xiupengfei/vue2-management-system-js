@@ -1,7 +1,6 @@
 import request from '@/utils/request'
 
 export const login = data => {
-  console.log('22222222222222')
   return request({
     url: '/login',
     method: 'post',
