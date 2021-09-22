@@ -2,7 +2,7 @@
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
 
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, dir)
 }
 
@@ -47,7 +47,7 @@ module.exports = {
       maxEntrypointSize: 2097152 // 2MB
     }
   },
-  chainWebpack(config) {
+  chainWebpack (config) {
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
 
@@ -105,7 +105,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` 必须与RuntimeChunk名称相同, 默认为 `runtime`
+              // `runtime` 必须与RuntimeChunk名称相同, 默认为 `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()
@@ -141,5 +141,12 @@ module.exports = {
           config.optimization.runtimeChunk('single')
         }
       )
+  },
+  css: {
+    loaderOptions: {
+      sass: {
+        implementation: require('sass') // This line must in sass option
+      }
+    }
   }
 }
