@@ -1,0 +1,57 @@
+{
+  // 当保存时，自动格式化, 默认是：true
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  // 自动保存的时候，eslint自动修复一些格式上的错误
+  "eslint.alwaysShowStatus": true,
+  // 每次保存的时候将代码按eslint格式进行修复
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.probe": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "html",
+    "vue",
+    "markdown"
+  ],
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  // vue单文件按照vertr进行格式化
+  // "[vue]": {
+  //   "editor.defaultFormatter": "octref.vetur"
+  // },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "vetur.validation.template": false,
+  "fileheader.customMade": {
+    "Descripttion": "",
+    "Version": "v0.1",
+    "Author": "pengfei.xiu",
+    "Date": "Do not edit",
+    "LastEditors": "pengfei.xiu",
+    "LastEditTime": "Do not Edit"
+  },
+  "fileheader.cursorMode": {
+    "descripttion": "",
+    "param": "",
+    "return": ""
+  }
+}
