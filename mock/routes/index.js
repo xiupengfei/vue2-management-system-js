@@ -1,7 +1,15 @@
-var express = require('express')
-var router = express.Router()
+/*
+ * @Descripttion:
+ * @Version: v0.1
+ * @Author: pengfei.xiu
+ * @Date: 2021-10-08 19:32:16
+ * @LastEditors: pengfei.xiu
+ * @LastEditTime: 2021-10-08 19:47:29
+ */
+const express = require('express')
+const router = express.Router()
 
-var permissionMap = {
+const permissionMap = {
   admin: ['admin'],
   system: ['system:create', 'system:delete', 'system:update', 'system:query'],
   permission: ['permission:create', 'permission:delete', 'permission:update', 'permission:query'],
@@ -15,7 +23,8 @@ router.post('/login', (req, res, next) => {
   // console.log(req.query)
   // const roles = [['admin'].includes(req.body.username) ? 'admin' : 'member']
   let roles = []
-  if (permissionMap.hasOwnProperty(req.body.username)) {
+
+  if (Reflect.has(permissionMap, req.body.username)) {
     roles = permissionMap[req.body.username]
   }
   res.send({
@@ -25,7 +34,7 @@ router.post('/login', (req, res, next) => {
     permissions: roles,
     mail: '123456@qq.com',
     token: `${req.body.username}-token`,
-    avatar: 'http://127.0.0.1:3000/images/admin.png'
+    avatar: 'http://127.0.0.1:3000/images/admin.png',
   })
 })
 
@@ -41,7 +50,8 @@ router.get('/userinfo', (req, res, next) => {
   // const roles = [token.includes('admin') ? 'admin' : 'member']
   const username = token.replace('-token', '')
   let roles = []
-  if (permissionMap.hasOwnProperty(username)) {
+
+  if (Reflect.has(permissionMap, username)) {
     roles = permissionMap[username]
   }
 
@@ -53,7 +63,7 @@ router.get('/userinfo', (req, res, next) => {
     // roles: roles,
     permissions: roles,
     token: `${username}-token`,
-    avatar: `http://127.0.0.1:3000/images/${avatar}.png`
+    avatar: `http://127.0.0.1:3000/images/${avatar}.png`,
   })
 })
 

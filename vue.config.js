@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 const defaultSettings = require('./src/settings.js')
 const proxy = require('./proxy.js')
 
@@ -9,11 +10,13 @@ const name = defaultSettings.title || '' // 页面标题
 
 const port = process.env.VUE_APP_PORT || 8080
 
+const isDev = process.env.NODE_ENV === 'development'
+
 module.exports = {
   publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV === 'development',
+  lintOnSave: isDev,
   productionSourceMap: false,
   devServer: {
     port: port,
@@ -39,6 +42,7 @@ module.exports = {
     },
   },
   chainWebpack(config) {
+    config.plugin('cache').use(HardSourceWebpackPlugin)
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
 
@@ -79,7 +83,7 @@ module.exports = {
 
     config
       // https://webpack.js.org/configuration/devtool/#development
-      .when(process.env.NODE_ENV === 'development', (config) => config.devtool('cheap-source-map'))
+      .when(isDev, (config) => config.devtool('cheap-source-map'))
     config
       .plugin('simple-progress-webpack-plugin')
       .use(require.resolve('simple-progress-webpack-plugin'), [
@@ -87,7 +91,7 @@ module.exports = {
           format: 'compact',
         },
       ])
-    config.when(process.env.NODE_ENV !== 'development', (config) => {
+    config.when(!isDev, (config) => {
       config
         .plugin('ScriptExtHtmlWebpackPlugin')
         .after('html')

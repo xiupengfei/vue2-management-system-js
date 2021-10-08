@@ -1,21 +1,31 @@
-var createError = require('http-errors')
-var express = require('express')
-var path = require('path')
-var cookieParser = require('cookie-parser')
-var logger = require('morgan')
-var debug = require('debug')('my-application') // debug模块
+/*
+ * @Descripttion:
+ * @Version: v0.1
+ * @Author: pengfei.xiu
+ * @Date: 2021-10-08 19:31:20
+ * @LastEditors: pengfei.xiu
+ * @LastEditTime: 2021-10-08 19:45:55
+ */
+const express = require('express')
+const path = require('path')
+const cookieParser = require('cookie-parser')
+const logger = require('morgan')
+const debug = require('debug')('my-application') // debug模块
 const fs = require('fs')
-var indexRouter = require('./routes/index')
-var userRouter = require('./routes/users')
+const indexRouter = require('./routes/index')
 
-var app = express()
-app.set('port', process.env.PORT || 3000) // 设定监听端口
-var server = app.listen(app.get('port'), () => {
+const app = express()
+app.set('port', 3000)
+
+const server = app.listen(app.get('port'), () => {
   debug('Express server listening on port ' + server.address().port)
 })
 app.all('*', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'Content-Type,Content-Length, Authorization, Accept, X-Requested-With, X-Auth-Token')
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Content-Type,Content-Length, Authorization, Accept, X-Requested-With, X-Auth-Token',
+  )
   res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS')
   //  res.setHeader('content-type', 'application/jsoncharset=utf-8')
   //  res.setHeader('content-type', 'text/html charset=utf-8')
@@ -39,15 +49,10 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', indexRouter)
 
-const baseModuleDir = './routes'
+const baseModuleDir = path.join(__dirname, 'routes')
 
-fs.readdirSync(baseModuleDir).map(item => {
+fs.readdirSync(baseModuleDir).map((item) => {
   app.use(`/${item.replace('.js', '')}`, require(path.resolve(baseModuleDir, item)))
-})
-
-// catch 404 and forward to error handler
-app.use((req, res, next) => {
-  next(createError(404))
 })
 
 // error handler
