@@ -9,7 +9,9 @@
   公共样式
 */
 
-html, body, #app {
+html,
+body,
+#app {
   height: 100%;
 }
 
@@ -21,37 +23,43 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  font-family:
+    Helvetica Neue,
+    Helvetica,
+    PingFang SC,
+    Hiragino Sans GB,
+    Microsoft YaHei,
+    Arial,
+    sans-serif;
 }
-
 
 *,
-*:before,
-*:after {
+*::before,
+*::after {
   box-sizing: inherit;
 }
-
 
 label {
   font-weight: 700;
 }
 
 .no-padding {
-  padding: 0px !important;
+  padding: 0 !important;
 }
 
-a:focus,
-a:active,
-div:focus {
-  outline: none;
-}
-
-a,
-a:focus,
-a:hover {
+@mixin a {
   cursor: pointer;
   color: inherit;
   text-decoration: none;
+}
+
+a {
+  @include a;
+
+  &:focus,
+  &:hover {
+    @include a;
+  }
 }
 
 .fr {
@@ -63,7 +71,7 @@ a:hover {
 }
 
 .text-center {
-  text-align: center
+  text-align: center;
 }
 
 .inline-block {
@@ -75,11 +83,11 @@ a:hover {
 }
 
 .clearfix {
-  &:after {
+  &::after {
     visibility: hidden;
     display: block;
     font-size: 0;
-    content: " ";
+    content: ' ';
     clear: both;
     height: 0;
   }
@@ -97,6 +105,31 @@ ul {
 }
 
 // 修复 el-menu 菜单不显示的情况下显示上次页面菜单 active 问题
-.router-link-active>li{
+.router-link-active > li {
   color: $menuActiveText !important;
+}
+
+.filter-container {
+  height: 40px;
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.tabs-page {
+  .el-tabs {
+    height: 100%;
+
+    .el-tabs__content {
+      height: calc(100% - 60px);
+
+      .el-tab-pane {
+        height: 100%;
+      }
+    }
+  }
+}
+
+//***************************Color
+.dange-color {
+  color: #f56c6c;
 }

@@ -10,7 +10,7 @@ import { storageLevel } from '@/settings'
  * @description 获取数据类型
  */
 
-export const typeOf = (obj) => {
+export const typeOf = obj => {
   const toString = Object.prototype.toString
   const map = {
     '[object Boolean]': 'boolean',
@@ -43,10 +43,10 @@ export const parseTime = (time = null, cFormat = null) => {
   if (typeOf(time) === 'object') {
     date = time
   } else {
-    if ((typeOf(time) === 'string') && (/^[0-9]+$/.test(time))) {
+    if (typeOf(time) === 'string' && /^[0-9]+$/.test(time)) {
       time = Number.parseInt(time)
     }
-    if ((typeOf(time) === 'number') && (time.toString().length === 10)) {
+    if (typeOf(time) === 'number' && time.toString().length === 10) {
       time = time * 1000
     }
     date = new Date(time)
@@ -63,7 +63,9 @@ export const parseTime = (time = null, cFormat = null) => {
   const timeStr = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
     let value = formatObj[key]
     // 周日返回 0
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value] }
+    if (key === 'a') {
+      return ['日', '一', '二', '三', '四', '五', '六'][value]
+    }
     if (result.length > 0 && value < 10) {
       value = '0' + value
     }
@@ -219,7 +221,7 @@ export const SetStorate = (key, val) => {
  * @description 本地缓存数据读取
  */
 
-export const GetStorate = (key) => {
+export const GetStorate = key => {
   const value = window[`${storageLevel}Storage`].getItem(key)
   try {
     return JSON.parse(value)
@@ -232,7 +234,8 @@ export const GetStorate = (key) => {
  * @param {string} key
  * @description 本地缓存数据清除
  */
-export const ClearStorate = (key) => window[`${storageLevel}Storage`].removeItem(key)
+export const ClearStorate = key =>
+  window[`${storageLevel}Storage`].removeItem(key)
 
 /**
  * @param {string} key
@@ -247,10 +250,15 @@ export const ClearAllStorate = () => window[`${storageLevel}Storage`].clear()
 export const DownloadFile = (href = '', filename = 'template') => {
   let src = ''
   if (typeOf(href === 'blob')) {
-    src = URL.createObjectURL(new Blob([href], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }))
+    src = URL.createObjectURL(
+      new Blob([href], {
+        type:
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'
+      })
+    )
     // URL.revokeObjectURL(href)
   } else {
-    src = process.env.VUE_APP_SERVER_URL + href
+    src = process.env.VUE_APP_BASE_API + href
   }
   const win = document.getElementById('iframe').contentWindow
   const link = document.createElement('a')
@@ -268,7 +276,7 @@ export const DownloadFile = (href = '', filename = 'template') => {
 // export const DownloadFile = (href = '') => {
 //   const win = document.createElement('iframe')
 //   const winWrap = document.createElement('div')
-//   win.src = process.env.VUE_APP_SERVER_URL + href
+//   win.src = process.env.VUE_APP_BASE_API + href
 //   winWrap.style.width = 0
 //   winWrap.style.height = 0
 //   winWrap.style.overflow = 'hidden'
@@ -284,7 +292,7 @@ export const DownloadFile = (href = '', filename = 'template') => {
  * @description 读取Excel日期，读取的是期距离1900年1月1日的天数，因此需要转换
  */
 
-export const excelDate2Timestamp = (numb) => {
+export const excelDate2Timestamp = numb => {
   if (!Number.isInteger(numb)) {
     return null
   }
@@ -354,7 +362,7 @@ export const countWorkDays = (date1 = _startDay, date2 = _today) => {
  * @param {Object} json
  * @returns {String}
  */
-export const obj2Params = (json) => {
+export const obj2Params = json => {
   if (!json) return ''
   const L = Object.keys(json).map(key => {
     if (json[key] === undefined) return ''

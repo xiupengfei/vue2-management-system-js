@@ -1,14 +1,22 @@
+/*
+ * @Descripttion:
+ * @Version: v0.1
+ * @Author: pengfei.xiu
+ * @Date: 2021-10-08 14:59:47
+ * @LastEditors: pengfei.xiu
+ * @LastEditTime: 2021-10-08 18:55:27
+ */
 import store from '@/store'
 const { body } = document
 const WIDTH = 992 // 参考引导程序的响应设计
 
 export default {
   watch: {
-    $route(route) {
+    $route() {
       if (this.device === 'mobile' && this.sidebar.opened) {
         store.dispatch('app/closeSideBar', { withoutAnimation: false })
       }
-    }
+    },
   },
   beforeMount() {
     window.addEventListener('resize', this.$_resizeHandler)
@@ -38,6 +46,6 @@ export default {
           store.dispatch('app/closeSideBar', { withoutAnimation: true })
         }
       }
-    }
-  }
+    },
+  },
 }

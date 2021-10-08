@@ -1,8 +1,16 @@
+/*
+ * @Descripttion: 首页
+ * @Version: v0.1
+ * @Author: pengfei.xiu
+ * @Date: 2021-09-22 09:53:20
+ * @LastEditors: pengfei.xiu
+ * @LastEditTime: 2021-09-22 10:53:53
+ */
 /** 个人信息管理页面 **/
 
 import Layout from '@/layout'
 
-const dashboardRouter = {
+export default {
   path: '/dashboard',
   component: Layout,
   redirect: '/dashboard/index',
@@ -10,20 +18,19 @@ const dashboardRouter = {
   // hidden: true,
   name: 'dashboard',
   meta: {
-    title: '首页',
+    title: 'Dashboard',
     icon: 'dashboard'
   },
   children: [
     {
       path: 'index',
-      component: () => import(/* webpackChunkName: "dashboard_index" */ '@/views/dashboard/index'),
+      component: () =>
+        import(/* webpackChunkName: "dashboard_index" */ '@/views/dashboard/index'),
       name: 'dashboard_index',
       meta: {
-        title: '首页',
+        title: 'Dashboard',
         affix: true
       }
     }
   ]
 }
-
-export default dashboardRouter

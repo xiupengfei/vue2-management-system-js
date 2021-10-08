@@ -1,10 +1,9 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
+const proxy = require('./proxy.js')
 
-function resolve (dir) {
-  return path.join(__dirname, dir)
-}
+const resolve = (dir) => path.join(__dirname, dir)
 
 const name = defaultSettings.title || '' // 页面标题
 
@@ -21,41 +20,30 @@ module.exports = {
     open: true,
     overlay: {
       warnings: true,
-      errors: true
+      errors: true,
     },
-    proxy: {
-      [process.env.VUE_APP_BASE_API]: {
-        target: process.env.VUE_APP_SERVER_URL,
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
-      }
-    }
+    proxy,
   },
   configureWebpack: {
     name: name,
     resolve: {
       alias: {
-        '@': resolve('src')
-      }
+        '@': resolve('src'),
+      },
     },
     performance: {
       // hints: 'warning',
       maxAssetSize: 614400, // 600KB
       // 入口起点的最大体积
-      maxEntrypointSize: 2097152 // 2MB
-    }
+      maxEntrypointSize: 2097152, // 2MB
+    },
   },
-  chainWebpack (config) {
+  chainWebpack(config) {
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
 
     // set svg-sprite-loader
-    config.module
-      .rule('svg')
-      .exclude.add(resolve('src/icons'))
-      .end()
+    config.module.rule('svg').exclude.add(resolve('src/icons')).end()
     config.module
       .rule('icons')
       .test(/\.svg$/)
@@ -64,7 +52,7 @@ module.exports = {
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
       .options({
-        symbolId: 'icon-[name]'
+        symbolId: 'icon-[name]',
       })
       .end()
 
@@ -73,7 +61,7 @@ module.exports = {
       .rule('vue')
       .use('vue-loader')
       .loader('vue-loader')
-      .tap(options => {
+      .tap((options) => {
         options.compilerOptions.preserveWhitespace = true
         return options
       })
@@ -84,69 +72,69 @@ module.exports = {
       .use('worker-loader')
       .loader('worker-loader')
       .options({
-        inline: true
+        inline: true,
         // publicPath: './'
       })
       .end()
 
     config
       // https://webpack.js.org/configuration/devtool/#development
-      .when(process.env.NODE_ENV === 'development',
-        config => config.devtool('cheap-source-map')
-      )
-    config.plugin('simple-progress-webpack-plugin')
-      .use(require.resolve('simple-progress-webpack-plugin'), [{
-        format: 'compact'
-      }])
+      .when(process.env.NODE_ENV === 'development', (config) => config.devtool('cheap-source-map'))
     config
-      .when(process.env.NODE_ENV !== 'development',
-        config => {
-          config
-            .plugin('ScriptExtHtmlWebpackPlugin')
-            .after('html')
-            .use('script-ext-html-webpack-plugin', [{
-              // `runtime` 必须与RuntimeChunk名称相同, 默认为 `runtime`
-              inline: /runtime\..*\.js$/
-            }])
-            .end()
-          config
-            .optimization.splitChunks({ // 分包
-              chunks: 'all',
-              cacheGroups: {
-                libs: {
-                  name: 'chunk-libs',
-                  test: /[\\/]node_modules[\\/]/,
-                  priority: 10,
-                  chunks: 'initial'
-                },
-                vue: {
-                  name: 'chunk-vue',
-                  test: /[\\/]node_modules[\\/]_?vue(.*)/,
-                  priority: 20
-                },
-                elementUI: {
-                  name: 'chunk-element-ui',
-                  priority: 18,
-                  test: /[\\/]node_modules[\\/]_?element-ui(.*)/
-                },
-                commons: {
-                  name: 'chunk-common-components',
-                  test: resolve('src/components'),
-                  minChunks: 3,
-                  priority: 5,
-                  reuseExistingChunk: true
-                }
-              }
-            })
-          config.optimization.runtimeChunk('single')
-        }
-      )
+      .plugin('simple-progress-webpack-plugin')
+      .use(require.resolve('simple-progress-webpack-plugin'), [
+        {
+          format: 'compact',
+        },
+      ])
+    config.when(process.env.NODE_ENV !== 'development', (config) => {
+      config
+        .plugin('ScriptExtHtmlWebpackPlugin')
+        .after('html')
+        .use('script-ext-html-webpack-plugin', [
+          {
+            // `runtime` 必须与RuntimeChunk名称相同, 默认为 `runtime`
+            inline: /runtime\..*\.js$/,
+          },
+        ])
+        .end()
+      config.optimization.splitChunks({
+        // 分包
+        chunks: 'all',
+        cacheGroups: {
+          libs: {
+            name: 'chunk-libs',
+            test: /[\\/]node_modules[\\/]/,
+            priority: 10,
+            chunks: 'initial',
+          },
+          vue: {
+            name: 'chunk-vue',
+            test: /[\\/]node_modules[\\/]_?vue(.*)/,
+            priority: 20,
+          },
+          elementUI: {
+            name: 'chunk-element-ui',
+            priority: 18,
+            test: /[\\/]node_modules[\\/]_?element-ui(.*)/,
+          },
+          commons: {
+            name: 'chunk-common-components',
+            test: resolve('src/components'),
+            minChunks: 3,
+            priority: 5,
+            reuseExistingChunk: true,
+          },
+        },
+      })
+      config.optimization.runtimeChunk('single')
+    })
   },
   css: {
     loaderOptions: {
       sass: {
-        implementation: require('sass') // This line must in sass option
-      }
-    }
-  }
+        implementation: require('sass'),
+      },
+    },
+  },
 }

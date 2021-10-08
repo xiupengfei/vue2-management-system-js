@@ -1,3 +1,11 @@
+/*
+ * @Descripttion:
+ * @Version: v0.1
+ * @Author: pengfei.xiu
+ * @Date: 2021-10-08 14:59:47
+ * @LastEditors: pengfei.xiu
+ * @LastEditTime: 2021-10-08 18:56:05
+ */
 import { deepClone } from '@/utils'
 
 export default {
@@ -5,7 +13,7 @@ export default {
     return {
       dialogVisible: false,
       loading: false,
-      form: {}
+      form: {},
     }
   },
   methods: {
@@ -18,7 +26,7 @@ export default {
       this.loading = false
     },
     hide() {
-      Object.entries(this.form).map(([k, v]) => {
+      Object.entries(this.form).map(([_, v]) => {
         if (Array.isArray(v)) {
           v.splice(0)
         }
@@ -37,6 +45,6 @@ export default {
           return false
         }
       })
-    }
-  }
+    },
+  },
 }

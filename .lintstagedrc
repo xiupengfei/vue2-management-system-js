@@ -1,0 +1,5 @@
+{
+  "src/**/*.{vue,html,js,ts,jsx,tsx}": ["npm run lint", "git add ."],
+  "src/**/*.{css,scss}": ["stylelint src/**/*.{css,scss} --syntax scss --fix"],
+  "src/**/*.{html,vue}": ["stylelint src/**/*.{html,vue} --custom-syntax postcss-html --fix"]
+}

@@ -1,6 +1,14 @@
+/*
+ * @Descripttion: Setting
+ * @Version: v0.1
+ * @Author: pengfei.xiu
+ * @Date: 2021-09-22 10:32:55
+ * @LastEditors: pengfei.xiu
+ * @LastEditTime: 2021-10-08 15:03:21
+ */
 
 module.exports = {
-  title: '宏燊管理系统Demo',
+  title: '管理系统Demo',
   version: '0.0.1',
   /**
    * @type {boolean} true | false
@@ -10,7 +18,7 @@ module.exports = {
   /**
    * @type {string} 'large' | 'medium' | 'small'
    * @description 组件尺寸 默认: small
-  */
+   */
   componentSize: 'small',
   /**
    * @type {boolean} true | false
@@ -23,11 +31,6 @@ module.exports = {
    * @description 是否显示Logo
    */
   sidebarLogo: true,
-  /**
-   * @type {boolean} true | false
-   * @description 是否显示系统时间
-   */
-  showSystemTime: false,
 
   /**
    * @type {object} []
@@ -44,5 +47,6 @@ module.exports = {
    * @type {RegExp}
    * @description 密码规则验证
    */
-  password_regex: /^(?=^.{6,20}$)(?=(?:.*?\d){1})(?=(?:.*?[a-z]){1})(?=(?:.*?[A-Z]){1})(?!.*\s)[0-9a-zA-Z!@#$%*()_+^&?.]*$/
+  password_regex:
+    /^(?=^.{6,20}$)(?=(?:.*?\d){1})(?=(?:.*?[a-z]){1})(?=(?:.*?[A-Z]){1})(?!.*\s)[0-9a-zA-Z!@#$%*()_+^&?.]*$/,
 }

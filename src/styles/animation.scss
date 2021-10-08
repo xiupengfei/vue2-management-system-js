@@ -1,11 +1,13 @@
 @keyframes flicker {
-    from {
-        opacity: 1.0;
-    }
-    50% {
-        opacity: 0.4;
-    }
-    to {
-        opacity: 1.0;
-    }
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

@@ -1,16 +1,13 @@
 <template>
   <div class="navbar boxshadow">
-    <hamburger
+    <Hamburger
       id="hamburger-container"
       :is-active="sidebar.opened"
       class="hamburger-container"
       @toggleClick="toggleSideBar"
     />
-    <breadcrumb id="breadcrumb-container" class="fl" />
+    <Breadcrumb id="breadcrumb-container" class="fl" />
     <div class="right-menu fr">
-      <div v-if="showSystemTime" class="right-menu-item">
-        <system-time />
-      </div>
       <el-dropdown
         class="avatar-container right-menu-item hover-effect"
         trigger="click"
@@ -34,19 +31,14 @@
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import SystemTime from '@/components/SystemTime'
-import { showSystemTime } from '@/settings'
 
 export default {
   components: {
     Breadcrumb,
-    Hamburger,
-    SystemTime
+    Hamburger
   },
   data() {
-    return {
-      showSystemTime
-    }
+    return {}
   },
   computed: {
     sidebar() {

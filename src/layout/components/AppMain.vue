@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion:
+ * @Version: v0.1
+ * @Author: pengfei.xiu
+ * @Date: 2021-09-22 09:53:20
+ * @LastEditors: pengfei.xiu
+ * @LastEditTime: 2021-09-22 11:34:54
+-->
 <template>
   <section class="app-main">
     <!-- <el-scrollbar wrap-class="scroll-wrapper" view-class="view-box" :native="false"> -->
@@ -34,6 +42,9 @@ export default {
   position: relative;
   overflow-x: hidden;
   padding: 10px 10px 0;
+  & > div {
+    height: 100%;
+  }
 }
 
 .hasTagsView {
@@ -44,4 +55,3 @@ export default {
   }
 }
 </style>
-

@@ -11,13 +11,13 @@
 /* theme color */
 $color-primary: #1890ff;
 $color-success: #13ce66;
-$color-warning: #FFBA00;
+$color-warning: #ffba00;
 $color-danger: #ff4949;
-$color-info: #1E1E1E;
+$color-info: #1e1e1e;
 
 // sidebar
 $menuText:#bfcbd9;
-$menuActiveText:#409EFF;
+$menuActiveText:#409eff;
 $subMenuActiveText:#f4f4f5;
 
 $menuBg:#304156;
@@ -32,12 +32,6 @@ $sideBarWidth: 200px;
 $navBarHeight: 50px;
 
 :export {
-  menuText: $menuText;
-  menuActiveText: $menuActiveText;
-  subMenuActiveText: $subMenuActiveText;
-  menuBg: $menuBg;
-  menuHover: $menuHover;
-  subMenuBg: $subMenuBg;
-  subMenuHover: $subMenuHover;
-  sideBarWidth: $sideBarWidth;
+  custom-menu-text-color: $menuText;
+  custom-menu-bg: $menuBg;
 }
