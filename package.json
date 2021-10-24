@@ -1,8 +1,12 @@
 {
   "name": "vue-project-es6-base",
   "version": "0.0.1",
-  "description": "基于Vue的后台管理系统项目Base",
-  "author": "pengfei.xiu",
+  "author": {
+    "name": "pengfei.xiu",
+    "email": "15541647796@163.com"
+  },
+  "private": true,
+  "description": "基于Vue2 + element-ui 构建的的后台管理系统",
   "scripts": {
     "start": "vue-cli-service serve",
     "dev": "concurrently \"nodemon mock/server.js\" \"vue-cli-service serve\"",
@@ -20,8 +24,7 @@
   },
   "keywords": [
     "vue",
-    "element-ui",
-    "management-system"
+    "element-ui"
   ],
   "dependencies": {
     "axios": "^0.22.0",
